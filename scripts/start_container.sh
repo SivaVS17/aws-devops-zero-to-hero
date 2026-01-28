@@ -1,8 +1,17 @@
 #!/bin/bash
 set -e
 
-# Pull the Docker image from Docker Hub
-docker pull siva2219/simple-python-flask-app
+CONTAINER_NAME=simple-python-flask-app
+IMAGE_NAME=siva2219/simple-python-flask-app:latest
 
-# Run the Docker image as a container
-docker run -d -p 5000:5000 siva2219/simple-python-flask-app
+echo "Stopping existing container if running..."
+docker rm -f $CONTAINER_NAME || true
+
+echo "Pulling latest image..."
+docker pull $IMAGE_NAME
+
+echo "Starting new container..."
+docker run -d \
+  --name $CONTAINER_NAME \
+  -p 5000:5000 \
+  $IMAGE_NAME
